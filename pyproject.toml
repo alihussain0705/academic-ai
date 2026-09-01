@@ -1,0 +1,32 @@
+[project]
+name = "ai-acedemic-platform"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "alembic>=1.19.1",
+    "chromadb>=1.5.9",
+    "email-validator>=2.3.0",
+    "fastapi>=0.140.1",
+    "langchain>=1.3.14",
+    "langchain-chroma>=1.1.0",
+    "langchain-community>=0.4.2",
+    "langchain-google-genai>=4.2.7",
+    "langchain-groq>=1.1.3",
+    "langchain-huggingface>=1.2.2",
+    "langchain-openai>=1.6.0",
+    "langgraph>=1.2.9",
+    "psycopg[binary]>=3.3.4",
+    "pwdlib[argon2]>=0.3.1",
+    "pyjwt>=2.13.0",
+    "pymupdf>=1.28.2",
+    "pypdf>=6.14.2",
+    "pytesseract>=0.3.13",
+    "python-dotenv>=1.2.2",
+    "python-multipart>=0.0.32",
+    "sentence-transformers>=5.6.0",
+    "sqlalchemy>=2.0.51",
+    "tavily>=1.1.0",
+    "uvicorn>=0.51.0",
+]
