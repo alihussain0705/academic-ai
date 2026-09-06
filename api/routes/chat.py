@@ -57,8 +57,12 @@ def chat(request: ChatRequest,current_user: User = Depends(get_current_user),db:
             content = result['response']
         )
         return ChatResponse(**result)
+    except HTTPException:
+        raise
+
     except Exception as e:
         logger.exception(f"Chat failed: {e}")
+
         raise HTTPException(
             status_code=500,
             detail="The AI service is temporarily down. Please try again later."

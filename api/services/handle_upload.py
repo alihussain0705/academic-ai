@@ -101,10 +101,18 @@ def handle_upload(file: UploadFile,
             document = document
         )
     except Exception as e:
-        print("ORIGINAL ERROR:", repr(e))
 
-        mark_as_failed(db = db, document = document)
+        mark_as_failed(
+            db=db,
+            document=document
+        )
+
         logger.exception("Document processing Failed")
+
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Document processing failed. Please try again later."
+        )
 
     return {
     "message": "Document uploaded successfully",

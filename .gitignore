@@ -19,7 +19,8 @@ chromadb/
 # Logs
 logs/
 *.log
-
+# Uploaded documents
+uploads/
 # OS files
 .DS_Store
 Thumbs.db

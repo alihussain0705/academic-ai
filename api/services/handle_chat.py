@@ -1,7 +1,6 @@
 from graph_tools.runner import run_workflow
 from langchain_core.messages import HumanMessage
 from ..user import UserProfile
-from state import State
 
 def handle_chat(task: str, thread_id: str,user: UserProfile):
     messages = [

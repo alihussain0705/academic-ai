@@ -12,7 +12,6 @@ from tools.rag_tool import rag_tool
 from prompts.research import RESEARCH_PROMPT
 from utils.logger import logger
 
-
 class ResearchState(TypedDict):
     messages: list[BaseMessage]
     semester: int

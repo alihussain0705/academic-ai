@@ -1,9 +1,10 @@
-from pydantic import BaseModel,EmailStr,Field
+from pydantic import BaseModel,EmailStr,Field,StringConstraints
+from typing import Annotated
 
 class ChatRequest(BaseModel):
-    task: str
+    task: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
     conversation_id: int
-    subject: str
+    subject: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
 
 
 class ChatResponse(BaseModel):
