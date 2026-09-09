@@ -14,13 +14,15 @@ JWT_ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES
 if not JWT_SECRET_KEY:
     raise RuntimeError("Secret Key is not set")
 
-def create_access_token(user_id: int) -> str:
+def create_access_token(user_id: int, role: str, name: str) -> str:
     expire = datetime.now(UTC)+timedelta(
         minutes=JWT_ACCESS_TOKEN_EXPIRE_MINUTES
     )
 
     payload = {
         "sub": str(user_id),
+        "role": role,
+        "name": name,
         "exp": expire
     }
 

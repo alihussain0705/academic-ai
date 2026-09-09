@@ -15,6 +15,13 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
+function ProfessorRoute({ children }: { children: React.ReactNode }) {
+  const { user, isLoading } = useAuth()
+  if (isLoading) return <div className="flex items-center justify-center h-screen">Loading...</div>
+  if (user?.role !== 'professor' && user?.role !== 'admin') return <Navigate to="/" />
+  return <>{children}</>
+}
+
 function AppRoutes() {
   const { isAuthenticated, user } = useAuth()
 
@@ -31,8 +38,8 @@ function AppRoutes() {
         }
       />
       <Route path="/chat/:conversationId" element={<ProtectedRoute><ChatPage /></ProtectedRoute>} />
-      <Route path="/documents" element={<ProtectedRoute><DocumentManagement /></ProtectedRoute>} />
-      <Route path="/upload" element={<ProtectedRoute><DocumentUpload /></ProtectedRoute>} />
+      <Route path="/documents" element={<ProtectedRoute><ProfessorRoute><DocumentManagement /></ProfessorRoute></ProtectedRoute>} />
+      <Route path="/upload" element={<ProtectedRoute><ProfessorRoute><DocumentUpload /></ProfessorRoute></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   )

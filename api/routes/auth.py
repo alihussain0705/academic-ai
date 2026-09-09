@@ -62,7 +62,7 @@ def login(request:LoginRequest, db:Session = Depends(get_db)):
             detail = "Invalid Email or Password"
         )
 
-    access_token = create_access_token(user.id)
+    access_token = create_access_token(user.id, user.role, user.name)
 
     return {
         "access_token": access_token,

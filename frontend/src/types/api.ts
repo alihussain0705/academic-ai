@@ -1,12 +1,7 @@
 export interface User {
   id: number
   name: string
-  email: string
   role: string
-  department: string
-  college: string
-  semester: number
-  created_at: string
 }
 
 export interface LoginResponse {
