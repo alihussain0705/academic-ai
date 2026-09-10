@@ -30,7 +30,7 @@ def register(request:RegisterRequest,db:Session = Depends(get_db)):
         name = request.name,
         email = request.email,
         password_hash = hash_password(request.password),
-        role = request.role,
+        role = "student",
         department = request.department,
         college = request.college,
         semester = request.semester
@@ -51,7 +51,7 @@ def login(request:LoginRequest, db:Session = Depends(get_db)):
     if not user:
         raise HTTPException(
             status_code=401,
-            detail="Invald Email or Password"
+            detail="Invalid Email or Password"
         )
 
     if not verify_password(

@@ -11,7 +11,6 @@ export interface RegisterRequest {
   department: string
   college: string
   semester: string
-  role?: string
 }
 
 export interface LoginResponse {

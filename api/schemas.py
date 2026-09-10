@@ -22,7 +22,6 @@ class RegisterRequest(BaseModel):
     department: str
     college: str
     semester: str
-    role: str = "student"
 
 class RegisterResponse(BaseModel):
     id: int

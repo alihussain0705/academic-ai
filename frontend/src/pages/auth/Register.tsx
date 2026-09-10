@@ -12,7 +12,6 @@ export default function Register() {
     department: '',
     college: '',
     semester: '',
-    role: 'student',
   })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
