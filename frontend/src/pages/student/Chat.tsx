@@ -32,8 +32,8 @@ export default function ChatPage() {
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!input.trim() || !conversation || !subject) {
-      setError('Please enter a question and select a subject')
+    if (!input.trim() || !conversation || !subject.trim()) {
+      setError('Please enter a question and a subject')
       return
     }
     setSending(true)
@@ -47,8 +47,8 @@ export default function ChatPage() {
       const chatData = res.data as ChatResponse
       setMessages((prev) => [
         ...prev,
-        { id: Date.now(), conversation_id: conversation.id, role: 'user', content: input, created_at: new Date().toISOString() },
-        { id: Date.now() + 1, conversation_id: conversation.id, role: 'assistant', content: chatData.response, created_at: new Date().toISOString() },
+        { id: Date.now(), role: 'user', content: input, created_at: new Date().toISOString() },
+        { id: Date.now() + 1, role: 'assistant', content: chatData.response, created_at: new Date().toISOString() },
       ])
       setInput('')
     } catch {
@@ -104,24 +104,17 @@ export default function ChatPage() {
           onChange={(e) => setInput(e.target.value)}
           disabled={sending}
         />
-        <select
+        <input
+          type="text"
           className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-40"
+          placeholder="Subject"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
           disabled={sending}
-        >
-          <option value="">Subject</option>
-          <option value="Computer Science">Computer Science</option>
-          <option value="Mathematics">Mathematics</option>
-          <option value="Physics">Physics</option>
-          <option value="Chemistry">Chemistry</option>
-          <option value="Biology">Biology</option>
-          <option value="English">English</option>
-          <option value="History">History</option>
-        </select>
+        />
         <button
           type="submit"
-          disabled={sending || !input.trim() || !subject}
+          disabled={sending || !input.trim() || !subject.trim()}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
         >
           {sending ? 'Sending...' : 'Send'}

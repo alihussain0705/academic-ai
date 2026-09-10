@@ -4,6 +4,16 @@ export interface User {
   role: string
 }
 
+export interface RegisterRequest {
+  name: string
+  email: string
+  password: string
+  department: string
+  college: string
+  semester: string
+  role?: string
+}
+
 export interface LoginResponse {
   access_token: string
   token_type: string
@@ -11,8 +21,6 @@ export interface LoginResponse {
 
 export interface Conversation {
   id: number
-  user_id: number
-  thread_id: string
   title: string | null
   created_at: string
   updated_at: string
@@ -20,7 +28,6 @@ export interface Conversation {
 
 export interface Message {
   id: number
-  conversation_id: number
   role: string
   content: string
   created_at: string

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import type { RegisterRequest } from '../types/api'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
@@ -30,7 +31,7 @@ api.interceptors.response.use(
 )
 
 export const authAPI = {
-  register: (data: Record<string, unknown>) => api.post('/auth/register', data),
+  register: (data: RegisterRequest) => api.post('/auth/register', data),
   login: (data: { email: string; password: string }) => api.post('/auth/login', data),
 }
 
@@ -49,7 +50,6 @@ export const documentAPI = {
   upload: (formData: FormData) => api.post('/upload/', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }),
-  getDocument: (id: number) => api.get(`/documents/documents/${id}`),
   deleteDocument: (id: number) => api.delete(`/documents/document-delete/${id}`),
 }
 

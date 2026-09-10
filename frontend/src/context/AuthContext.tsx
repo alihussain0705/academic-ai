@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import { authAPI } from '../services/api'
-import type { User, LoginResponse } from '../types/api'
+import type { User, LoginResponse, RegisterRequest } from '../types/api'
 
 interface AuthContextType {
   user: User | null
@@ -8,7 +8,7 @@ interface AuthContextType {
   isAuthenticated: boolean
   isLoading: boolean
   login: (data: { email: string; password: string }) => Promise<void>
-  register: (data: Record<string, unknown>) => Promise<void>
+  register: (data: RegisterRequest) => Promise<void>
   logout: () => void
 }
 
@@ -57,10 +57,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(userData)
   }
 
-  const register = async (data: Record<string, unknown>) => {
+  const register = async (data: RegisterRequest) => {
     await authAPI.register(data)
-    const { email, password } = data as { email: string; password: string }
-    await login({ email, password })
+    await login({ email: data.email, password: data.password })
   }
 
   const logout = () => {
