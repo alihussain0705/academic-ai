@@ -1,6 +1,7 @@
 from langchain_core.tools import tool
 from langchain_chroma import Chroma
 from config import CHROMA_DB_PATH, embedding_model, TOP_K
+from metadata import normalize_query_metadata
 from utils.logger import logger
 
 vector_store = Chroma(
@@ -44,6 +45,13 @@ def rag_tool(
     print("subject:", repr(subject))
     print("================================")
 
+    meta = normalize_query_metadata(
+        college=college,
+        department=department,
+        semester=semester,
+        subject=subject,
+    )
+
     print("\nACTUAL CHROMA METADATA:")
     data = vector_store._collection.get(
         limit=10,
@@ -54,10 +62,10 @@ def rag_tool(
         print(metadata)
 
     logger.info(
-        f"RAG metadata | college={college}, "
-        f"department={department}, "
-        f"semester={semester}, "
-        f"subject={subject}"
+        f"RAG metadata | college={meta['college']}, "
+        f"department={meta['department']}, "
+        f"semester={meta['semester']}, "
+        f"subject={meta['subject']}"
     )
 
     retriever = vector_store.as_retriever(
@@ -66,10 +74,10 @@ def rag_tool(
         "k": TOP_K,
         "filter": {
             "$and": [
-                {"department": department},
-                {"college": college},
-                {"semester": semester},
-                {"subject": subject}
+                {"department": meta["department"]},
+                {"college": meta["college"]},
+                {"semester": meta["semester"]},
+                {"subject": meta["subject"]}
             ]
         }
     }

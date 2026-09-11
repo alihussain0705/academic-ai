@@ -40,6 +40,8 @@ export const conversationAPI = {
   create: () => api.post('/conversations/'),
   get: (id: number) => api.post(`/conversations/${id}`),
   getMessages: (id: number) => api.get(`/conversations/${id}/messages`),
+  rename: (id: number, title: string) => api.patch(`/conversations/${id}`, { title }),
+  delete: (id: number) => api.delete(`/conversations/${id}`),
 }
 
 export const chatAPI = {
@@ -47,6 +49,9 @@ export const chatAPI = {
 }
 
 export const documentAPI = {
+  list: () => api.get('/documents/documents'),
+  listClass: () => api.get('/documents/class'),
+  download: (id: number) => api.get(`/documents/${id}/download`, { responseType: 'blob' }),
   upload: (formData: FormData) => api.post('/upload/', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }),

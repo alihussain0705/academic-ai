@@ -1,8 +1,10 @@
 from fastapi import HTTPException,status
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from langchain_core.vectorstores import VectorStore
 import os
 from ingestion import get_vector_store
+from metadata import normalize_text
 
 from ..Database.models import AcademicDocument,User
 
@@ -52,13 +54,11 @@ def mark_as_failed(db:Session,document: AcademicDocument):
     db.refresh(document)
     return document
 
-# def get_user_documents(db:Session, user_id: int,document_id: int):
-#     matching_documents = db.query(AcademicDocument).filter(
-#         AcademicDocument.user_id == user_id,
-        
-#     ).all()
+def get_user_documents(db: Session, user_id: int):
+    return db.query(AcademicDocument).filter(
+        AcademicDocument.user_id == user_id
+    ).all()
 
-    return matching_documents
 def get_user_document(db:Session, user_id: int,document_id: int):
     document = db.query(AcademicDocument).filter(
         AcademicDocument.id == document_id,
@@ -73,6 +73,33 @@ def get_user_document(db:Session, user_id: int,document_id: int):
             status_code = status.HTTP_404_NOT_FOUND,
             detail = "Document not found."
         )
+
+def get_class_documents(db: Session, user: User):
+    user_college = normalize_text(user.college)
+    user_department = normalize_text(user.department)
+    return db.query(AcademicDocument).filter(
+        func.lower(AcademicDocument.college) == user_college,
+        func.lower(AcademicDocument.department) == user_department,
+        AcademicDocument.semester == user.semester,
+        AcademicDocument.status == "completed"
+    ).all()
+
+def get_class_document(db: Session, document_id: int, user: User):
+    user_college = normalize_text(user.college)
+    user_department = normalize_text(user.department)
+    document = db.query(AcademicDocument).filter(
+        AcademicDocument.id == document_id,
+        func.lower(AcademicDocument.college) == user_college,
+        func.lower(AcademicDocument.department) == user_department,
+        AcademicDocument.semester == user.semester
+    ).first()
+
+    if not document:
+        raise HTTPException(
+            status_code = status.HTTP_404_NOT_FOUND,
+            detail = "Document not found."
+        )
+    return document
 
 def delete_document_vectors(document_id: int, vector_store: VectorStore):
     return vector_store.delete(

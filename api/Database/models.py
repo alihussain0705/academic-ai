@@ -54,7 +54,7 @@ class User(Base):
 
     created_at:Mapped[DateTime] = mapped_column(
         DateTime,
-        default = datetime.now(UTC),
+        default = lambda: datetime.now(UTC),
         nullable=False
     )
     conversations = relationship(
@@ -178,7 +178,8 @@ class AcademicDocument(Base):
     file_hash: Mapped[str] = mapped_column(
         String(64),
         nullable = False,
-        index = True
+        index = True,
+        unique = True
     )
 
     college: Mapped[str] = mapped_column(

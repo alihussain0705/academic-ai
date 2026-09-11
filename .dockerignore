@@ -1,0 +1,56 @@
+# Version control
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+.pytest_cache
+.mypy_cache
+
+# Virtual environment
+.venv
+venv
+env
+
+# Environment files
+.env
+.env.*
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# ChromaDB (persistent — mounted at runtime)
+chromadb
+
+# Uploads (persistent — mounted at runtime)
+uploads
+
+# Frontend (separate deployment)
+frontend/node_modules
+frontend/dist
+frontend/.vite
+
+# Test artifacts
+tests/__pycache__
+
+# Local development files
+main.py
+reindex.py
+availablemodels.py
+graph.py
+*.md
+!README.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile
+.dockerignore

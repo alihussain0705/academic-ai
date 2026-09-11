@@ -4,6 +4,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from config import CHUNK_SIZE, CHUNK_OVERLAP,embedding_model,CHROMA_DB_PATH
 import os
 from langchain_chroma import Chroma
+from metadata import normalize_metadata
 from utils.logger import logger
 from ocr import ocr_pdf
 
@@ -97,3 +98,19 @@ def ingest_pdf(pdf_path:str, metadata: dict):
         "status":"success",
         "chunks":len(chunked_documents)
     }
+
+
+def normalize_existing_metadata():
+    """
+    DEPRECATED — was destructive and wiped the Chroma collection on failure.
+
+    This function previously deleted the entire collection and attempted to
+    recreate it, which caused data loss when the rebuild failed to persist
+    HNSW data.  It is now a safe no-op.  Use reindex_existing_pdfs() to
+    re-populate ChromaDB from existing PDFs.
+    """
+    logger.warning(
+        "normalize_existing_metadata() is deprecated and is now a safe no-op. "
+        "Use reindex_existing_pdfs() to re-populate ChromaDB."
+    )
+    return {"migrated": 0, "warning": "deprecated no-op"}

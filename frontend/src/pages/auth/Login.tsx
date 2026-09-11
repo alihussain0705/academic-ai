@@ -1,16 +1,20 @@
-import { useState } from 'react'
+import { useState, type FormEvent } from 'react'
 import { useAuth } from '../../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
+import { Eye, EyeOff } from 'lucide-react'
+import AuthLayout from './AuthLayout'
+import Button from '../../components/ui/Button'
 
 export default function Login() {
   const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
     setLoading(true)
@@ -27,65 +31,88 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+    <AuthLayout>
+      <div className="page-enter">
+        <h2 className="text-2xl font-bold text-surface-900 tracking-tight mb-1">
+          Welcome back
+        </h2>
+        <p className="text-sm text-surface-500 mb-8">
+          Sign in to continue to AI Academic Platform
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded text-sm">
+            <div className="rounded-lg bg-danger-50 border border-danger-500/20 text-danger-600 px-4 py-3 text-sm">
               {error}
             </div>
           )}
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email" className="sr-only">Email</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">Password</label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-surface-700 mb-1.5">
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              autoFocus
+              className="w-full rounded-lg border border-surface-200 bg-surface-0 px-3.5 py-2.5 text-sm text-surface-800 placeholder:text-surface-400 focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-500/20 transition-colors"
+              placeholder="you@university.edu"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
 
           <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-            >
-              {loading ? 'Signing in...' : 'Sign in'}
-            </button>
+            <label htmlFor="password" className="block text-sm font-medium text-surface-700 mb-1.5">
+              Password
+            </label>
+            <div className="relative">
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                required
+                autoComplete="current-password"
+                className="w-full rounded-lg border border-surface-200 bg-surface-0 px-3.5 py-2.5 pr-10 text-sm text-surface-800 placeholder:text-surface-400 focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-500/20 transition-colors"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-surface-400 hover:text-surface-600 transition-colors"
+                tabIndex={-1}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
           </div>
-          <p className="text-center text-sm text-gray-600">
-            Don't have an account?{' '}
-            <a href="/register" className="font-medium text-blue-600 hover:text-blue-500">
-              Register
-            </a>
-          </p>
+
+          <Button
+            type="submit"
+            loading={loading}
+            disabled={!email || !password}
+            className="w-full"
+          >
+            Sign in
+          </Button>
         </form>
+
+        <p className="mt-6 text-center text-sm text-surface-500">
+          Don't have an account?{' '}
+          <Link
+            to="/register"
+            className="font-medium text-brand-600 hover:text-brand-700 transition-colors"
+          >
+            Create an account
+          </Link>
+        </p>
       </div>
-    </div>
+    </AuthLayout>
   )
 }

@@ -30,7 +30,7 @@ tavily_client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200
 TOP_K = 3
-CHROMA_DB_PATH = "./chromadb"
+CHROMA_DB_PATH = os.getenv("CHROMA_DB_PATH", "./chromadb")
 MAX_FILE_SIZE = 10485760
 
 

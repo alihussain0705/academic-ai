@@ -1,6 +1,7 @@
 from fastapi import HTTPException,status
 from sqlalchemy.orm import Session
 import uuid
+import re
 
 from ..Database.models import Conversation,Message
 
@@ -38,6 +39,30 @@ def get_conversation(
             detail = "Conversation not found."
         )
     return conversation
+
+def generate_title(text: str, max_length: int = 60) -> str:
+    text = text.strip()
+    text = re.sub(r'[?!.,;:]+$', '', text)
+    if len(text) > max_length:
+        text = text[:max_length].rsplit(' ', 1)[0]
+    return text if text else "New Conversation"
+
+def rename_conversation(
+        db: Session,
+        conversation: Conversation,
+        title: str
+):
+    conversation.title = title
+    db.commit()
+    db.refresh(conversation)
+    return conversation
+
+def delete_conversation(
+        db: Session,
+        conversation: Conversation
+):
+    db.delete(conversation)
+    db.commit()
 
 def add_message(
         db: Session,

@@ -5,10 +5,6 @@ from io import BytesIO
 
 from langchain_core.documents import Document
 
-pytesseract.pytesseract.tesseract_cmd = (
-    r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-)
-
 
 def ocr_pdf(pdf_path: str) -> list[Document]:
     pdf = pymupdf.open(pdf_path)

@@ -54,4 +54,12 @@ export interface AcademicDocument {
   updated_at: string
 }
 
+export interface ClassDocument {
+  id: number
+  filename: string
+  subject: string
+  unit: number
+  created_at: string
+}
+
 
