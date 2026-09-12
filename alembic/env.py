@@ -5,7 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from api.Database.connection import Base
+from api.Database.connection import Base, normalize_database_url
 from api.Database import models
 
 import os
@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-database_url = os.getenv("DATABASE_URL")
+database_url = normalize_database_url(os.getenv("DATABASE_URL", ""))
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -49,7 +49,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = database_url or config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url,
         target_metadata=target_metadata,
